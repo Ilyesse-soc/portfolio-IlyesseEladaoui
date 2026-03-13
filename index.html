@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ilyesse El Adaoui — AI & Data Engineer</title>
+<meta name="description" content="AI & Data Engineer specialized in scalable data pipelines, cloud-native architecture on GCP, and applied AI systems."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ─── RESET & ROOT ─── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --white:#ffffff;--off-white:#f7f8fc;--gray-50:#f0f2f8;
+  --gray-100:#e4e8f2;--gray-200:#c8d0e4;--gray-400:#8892aa;
+  --gray-600:#4a5568;--gray-800:#1e2533;--gray-900:#0f1320;
+  --blue-50:#eff5ff;--blue-100:#ddeaff;--blue-400:#4a90d9;
+  --blue-500:#2563eb;--blue-600:#1a4fc8;--blue-700:#1240a8;
+  --cyan-100:#cff4fd;--cyan-400:#22c5e6;--cyan-500:#06b6d4;
+  --font-display:'Sora',sans-serif;--font-mono:'DM Mono',monospace;
+  --nav-h:68px;--max-w:1120px;--radius:12px;--radius-lg:20px;
+  --shadow-card:0 2px 16px rgba(15,19,32,.07),0 1px 3px rgba(15,19,32,.04);
+  --shadow-card-hover:0 8px 40px rgba(15,19,32,.12),0 2px 8px rgba(15,19,32,.06);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--font-display);background:var(--white);color:var(--gray-800);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+img,svg{display:block;max-width:100%}
+
+/* ─── LAYOUT HELPERS ─── */
+.container{max-width:var(--max-w);margin:0 auto;padding:0 1.25rem}
+@media(min-width:640px){.container{padding:0 2rem}}
+@media(min-width:1024px){.container{padding:0 3rem}}
+section{padding:4rem 0}
+@media(min-width:768px){section{padding:6rem 0}}
+@media(min-width:1024px){section{padding:7rem 0}}
+
+/* ─── TYPOGRAPHY SCALE ─── */
+.section-label{font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.12em;color:var(--cyan-500);text-transform:uppercase;margin-bottom:10px}
+.section-title{font-size:clamp(22px,4vw,38px);font-weight:600;line-height:1.2;letter-spacing:-.03em;color:var(--gray-900);margin-bottom:14px}
+.section-sub{font-size:clamp(14px,2vw,16px);color:var(--gray-400);max-width:520px;line-height:1.75;margin-bottom:48px}
+.tag{font-family:var(--font-mono);font-size:10.5px;padding:3px 8px;border-radius:4px;background:var(--gray-50);color:var(--gray-600);border:1px solid var(--gray-100)}
+.tag.blue{background:var(--blue-50);color:var(--blue-600);border-color:var(--blue-100)}
+.tag.cyan{background:var(--cyan-100);color:#0e7490;border-color:#a5f3fc}
+
+/* ─── NAVBAR ─── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav-h);background:rgba(255,255,255,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--gray-100)}
+.nav-inner{max-width:var(--max-w);margin:0 auto;padding:0 1.25rem;height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px}
+@media(min-width:640px){.nav-inner{padding:0 2rem}}
+@media(min-width:1024px){.nav-inner{padding:0 3rem}}
+
+.nav-logo{font-size:14px;font-weight:600;letter-spacing:-.02em;color:var(--gray-900);display:flex;align-items:center;gap:9px;flex-shrink:0}
+.nav-logo-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan-500);animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.45);opacity:.7}}
+
+/* Desktop links */
+.nav-links-desktop{display:none;gap:2rem;align-items:center}
+@media(min-width:900px){.nav-links-desktop{display:flex}}
+.nav-links-desktop a{font-size:13px;font-weight:400;color:var(--gray-600);transition:color .2s}
+.nav-links-desktop a:hover{color:var(--blue-600)}
+.nav-cta{font-size:12.5px;font-weight:500;padding:7px 16px;border-radius:8px;background:var(--gray-900);color:var(--white)!important;transition:background .2s,transform .15s}
+.nav-cta:hover{background:var(--blue-700)!important;transform:translateY(-1px)}
+
+/* Right cluster: lang + hamburger */
+.nav-right{display:flex;align-items:center;gap:10px}
+
+/* Lang toggle — adapts on mobile */
+.lang-toggle{display:flex;align-items:center;gap:2px;background:var(--gray-50);border:1px solid var(--gray-100);border-radius:8px;padding:3px}
+.lang-btn{font-family:var(--font-mono);font-size:11px;font-weight:500;padding:4px 8px;border-radius:6px;border:none;background:transparent;color:var(--gray-400);cursor:pointer;transition:all .18s;white-space:nowrap}
+@media(min-width:640px){.lang-btn{padding:5px 10px;font-size:11.5px}}
+.lang-btn.active{background:var(--white);color:var(--gray-900);box-shadow:0 1px 4px rgba(15,19,32,.1)}
+.lang-btn:hover:not(.active){color:var(--gray-800)}
+
+/* Hamburger */
+.hamburger{display:flex;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;border:none;background:transparent;cursor:pointer;padding:6px;border-radius:8px;transition:background .2s}
+.hamburger:hover{background:var(--gray-50)}
+.hamburger span{display:block;width:18px;height:2px;background:var(--gray-800);border-radius:2px;transition:transform .28s cubic-bezier(.22,1,.36,1),opacity .2s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+@media(min-width:900px){.hamburger{display:none}}
+
+/* Mobile drawer */
+.mobile-drawer{position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;z-index:190;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);transform:translateY(-4px);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;display:flex;flex-direction:column;padding:2rem 1.5rem}
+.mobile-drawer.open{opacity:1;transform:translateY(0);pointer-events:all}
+.mobile-drawer a{font-size:22px;font-weight:500;color:var(--gray-800);padding:14px 0;border-bottom:1px solid var(--gray-100);transition:color .2s}
+.mobile-drawer a:last-child{border-bottom:none}
+.mobile-drawer a:hover{color:var(--blue-600)}
+.drawer-cta{margin-top:24px!important;border:none!important;display:inline-flex;width:fit-content;padding:13px 28px;border-radius:10px;background:var(--gray-900)!important;color:var(--white)!important;font-size:15px!important}
+
+/* ─── HERO ─── */
+#hero{min-height:100svh;padding-top:calc(var(--nav-h) + 3rem);padding-bottom:3rem;background:var(--white);display:flex;align-items:center;position:relative;overflow:hidden}
+@media(min-width:768px){#hero{padding-top:calc(var(--nav-h) + 5rem);padding-bottom:5rem}}
+.hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--gray-100) 1px,transparent 1px),linear-gradient(90deg,var(--gray-100) 1px,transparent 1px);background-size:48px 48px;opacity:.45;mask-image:radial-gradient(ellipse 80% 70% at 60% 40%,black 20%,transparent 75%)}
+.hero-glow{position:absolute;top:-80px;right:-80px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(34,197,230,.07) 0%,transparent 65%)}
+.hero-inner{position:relative;z-index:1;width:100%}
+.hero-content{display:flex;flex-direction:column;gap:1.5rem;max-width:760px}
+@media(min-width:768px){.hero-content{gap:2rem}}
+
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11px;font-weight:400;letter-spacing:.04em;color:var(--blue-600);background:var(--blue-50);border:1px solid var(--blue-100);padding:5px 12px;border-radius:100px;width:fit-content}
+@media(min-width:640px){.hero-badge{font-size:12px;padding:6px 14px}}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan-500);flex-shrink:0}
+
+h1.hero-title{font-size:clamp(32px,7vw,72px);font-weight:600;line-height:1.08;letter-spacing:-.04em;color:var(--gray-900)}
+h1.hero-title .accent{color:var(--blue-500)}
+
+.hero-desc{font-size:clamp(14px,2.2vw,18px);color:var(--gray-400);max-width:520px;line-height:1.75}
+
+.hero-actions{display:flex;flex-direction:column;gap:10px;width:100%}
+@media(min-width:480px){.hero-actions{flex-direction:row;gap:12px;width:auto}}
+
+.btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:10px;background:var(--gray-900);color:var(--white);font-size:14px;font-weight:500;letter-spacing:.01em;transition:background .2s,transform .15s,box-shadow .2s;box-shadow:0 2px 8px rgba(15,19,32,.18);text-align:center}
+.btn-primary:hover{background:var(--blue-700);transform:translateY(-2px);box-shadow:0 6px 24px rgba(26,79,200,.28)}
+.btn-secondary{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:10px;background:transparent;color:var(--gray-800);font-size:14px;font-weight:500;border:1.5px solid var(--gray-200);transition:border-color .2s,background .2s,transform .15s;text-align:center}
+.btn-secondary:hover{border-color:var(--blue-400);background:var(--blue-50);transform:translateY(-2px)}
+
+.hero-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;padding-top:28px;border-top:1px solid var(--gray-100)}
+@media(min-width:640px){.hero-stats{grid-template-columns:repeat(4,1fr);gap:32px}}
+.stat-num{font-size:24px;font-weight:600;letter-spacing:-.04em;color:var(--gray-900);line-height:1}
+@media(min-width:768px){.stat-num{font-size:28px}}
+.stat-num span{font-size:16px;color:var(--cyan-500)}
+.stat-label{font-size:12px;color:var(--gray-400);margin-top:4px}
+
+/* ─── ABOUT ─── */
+#about{background:var(--off-white)}
+.about-grid{display:grid;grid-template-columns:1fr;gap:40px}
+@media(min-width:768px){.about-grid{grid-template-columns:1fr 1fr;gap:64px;align-items:center}}
+@media(min-width:1024px){.about-grid{gap:80px}}
+.about-text p{font-size:15px;color:var(--gray-600);line-height:1.8;margin-bottom:14px}
+.about-text p:last-child{margin-bottom:0}
+.about-highlights{display:flex;flex-direction:column;gap:14px}
+.highlight-card{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius);padding:18px 20px;display:flex;align-items:flex-start;gap:14px;box-shadow:var(--shadow-card);transition:box-shadow .25s,transform .2s}
+.highlight-card:hover{box-shadow:var(--shadow-card-hover);transform:translateY(-2px)}
+.highlight-icon{width:38px;height:38px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:17px}
+.highlight-icon.blue{background:var(--blue-50)}.highlight-icon.cyan{background:var(--cyan-100)}.highlight-icon.slate{background:var(--gray-50)}
+.highlight-body h4{font-size:13.5px;font-weight:600;color:var(--gray-900);margin-bottom:4px}
+.highlight-body p{font-size:12.5px;color:var(--gray-400);line-height:1.6}
+
+/* ─── EXPERTISE ─── */
+#expertise{background:var(--white)}
+.expertise-grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:600px){.expertise-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.expertise-grid{grid-template-columns:repeat(4,1fr)}}
+.expertise-card{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-lg);padding:24px 20px;box-shadow:var(--shadow-card);transition:box-shadow .25s,transform .2s,border-color .2s;position:relative;overflow:hidden}
+.expertise-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue-500),var(--cyan-500));opacity:0;transition:opacity .25s}
+.expertise-card:hover{box-shadow:var(--shadow-card-hover);transform:translateY(-4px);border-color:var(--blue-100)}
+.expertise-card:hover::before{opacity:1}
+.expertise-icon{font-size:24px;margin-bottom:14px}
+.expertise-card h3{font-size:14.5px;font-weight:600;color:var(--gray-900);margin-bottom:8px}
+.expertise-card p{font-size:13px;color:var(--gray-400);line-height:1.7;margin-bottom:14px}
+.expertise-tags{display:flex;flex-wrap:wrap;gap:5px}
+
+/* ─── STACK ─── */
+#stack{background:var(--off-white)}
+.stack-categories{display:flex;flex-direction:column;gap:36px}
+.stack-cat h3{font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--gray-100)}
+.stack-items{display:flex;flex-wrap:wrap;gap:8px}
+.stack-item{display:flex;align-items:center;gap:7px;padding:7px 14px;border-radius:8px;background:var(--white);border:1px solid var(--gray-100);font-size:13px;font-weight:500;color:var(--gray-800);box-shadow:0 1px 4px rgba(15,19,32,.05);transition:border-color .2s,transform .15s,box-shadow .2s}
+.stack-item:hover{border-color:var(--blue-400);transform:translateY(-2px);box-shadow:var(--shadow-card)}
+.stack-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+/* ─── PROJECTS ─── */
+#projects{background:var(--white)}
+.projects-grid{display:grid;grid-template-columns:1fr;gap:20px}
+@media(min-width:640px){.projects-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.projects-grid{grid-template-columns:repeat(3,1fr)}}
+.project-card{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-card);transition:box-shadow .3s,transform .25s;display:flex;flex-direction:column}
+.project-card:hover{box-shadow:var(--shadow-card-hover);transform:translateY(-5px)}
+.project-card.featured{grid-column:1/-1;display:grid;grid-template-columns:1fr}
+@media(min-width:900px){.project-card.featured{grid-template-columns:1fr 1fr}}
+.project-header{padding:22px 22px 0}
+.project-card.featured .project-header{padding:28px 28px 0}
+@media(min-width:768px){.project-card.featured .project-header{padding:32px 32px 0}}
+.project-badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:4px;margin-bottom:12px}
+.project-badge.etl{background:var(--blue-50);color:var(--blue-600);border:1px solid var(--blue-100)}
+.project-badge.saas{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0}
+.project-badge.ai{background:#faf5ff;color:#7c3aed;border:1px solid #e9d5ff}
+.project-badge.bi{background:var(--cyan-100);color:#0e7490;border:1px solid #a5f3fc}
+.project-badge.siem{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
+.project-badge.dev{background:var(--gray-50);color:var(--gray-600);border:1px solid var(--gray-200)}
+.project-card h3{font-size:16px;font-weight:600;letter-spacing:-.02em;color:var(--gray-900);margin-bottom:7px;line-height:1.3}
+.project-card.featured h3{font-size:18px}
+@media(min-width:768px){.project-card.featured h3{font-size:21px}}
+.project-card p{font-size:13px;color:var(--gray-400);line-height:1.7}
+.project-body{padding:16px 22px 22px;flex:1;display:flex;flex-direction:column;justify-content:flex-end}
+.project-card.featured .project-body{padding:16px 28px 28px}
+@media(min-width:768px){.project-card.featured .project-body{padding:20px 32px 32px}}
+.project-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.project-visual{background:linear-gradient(135deg,var(--gray-50) 0%,var(--blue-50) 100%);display:flex;align-items:center;justify-content:center;min-height:140px;padding:24px}
+@media(min-width:900px){.project-card.featured .project-visual{min-height:100%}}
+.pv-diagram{width:100%;max-width:260px}
+
+/* ─── EXPERIENCE ─── */
+#experience{background:var(--off-white)}
+.timeline{display:flex;flex-direction:column}
+.timeline-item{display:grid;grid-template-columns:1fr;gap:6px;padding:24px 0;border-bottom:1px solid var(--gray-100)}
+@media(min-width:640px){.timeline-item{grid-template-columns:170px 1fr;gap:32px;padding:28px 0}}
+.timeline-item:last-child{border-bottom:none}
+.tl-date{font-family:var(--font-mono);font-size:11.5px;color:var(--gray-400);padding-top:4px;flex-shrink:0}
+.tl-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;gap:12px;flex-wrap:wrap}
+.tl-title{font-size:16px;font-weight:600;color:var(--gray-900)}
+.tl-company{font-size:13.5px;color:var(--blue-500);font-weight:500;margin-bottom:10px}
+.tl-desc{font-size:13.5px;color:var(--gray-600);line-height:1.75}
+.tl-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
+.tl-chip{font-family:var(--font-mono);font-size:10.5px;padding:3px 8px;border-radius:4px;background:var(--gray-50);color:var(--gray-600);border:1px solid var(--gray-100)}
+.tl-status{font-family:var(--font-mono);font-size:10px;font-weight:500;padding:3px 10px;border-radius:100px;background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;white-space:nowrap;flex-shrink:0}
+
+/* ─── EDUCATION ─── */
+#education{background:var(--white)}
+.edu-grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:640px){.edu-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.edu-grid{grid-template-columns:repeat(3,1fr)}}
+.edu-card{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow-card)}
+.edu-year{font-family:var(--font-mono);font-size:11px;color:var(--gray-400);margin-bottom:8px}
+.edu-school{font-size:15px;font-weight:600;color:var(--gray-900);margin-bottom:4px}
+.edu-degree{font-size:13px;color:var(--gray-400)}
+
+/* ─── CONTACT ─── */
+#contact{background:var(--gray-900);color:var(--white)}
+#contact .section-label{color:var(--cyan-400)}
+#contact .section-title{color:var(--white)}
+#contact .section-sub{color:rgba(255,255,255,.6)}
+.contact-grid{display:grid;grid-template-columns:1fr;gap:40px}
+@media(min-width:768px){.contact-grid{grid-template-columns:1fr 1fr;gap:56px;align-items:start}}
+.contact-links{display:flex;flex-direction:column;gap:10px}
+.contact-link{display:flex;align-items:center;gap:13px;padding:14px 18px;border-radius:var(--radius);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--white);font-size:14px;font-weight:500;transition:background .2s,border-color .2s}
+.contact-link:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16)}
+.contact-link-icon{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;font-family:var(--font-mono);font-weight:600}
+.contact-link-text{display:flex;flex-direction:column;min-width:0}
+.contact-link-label{font-size:10.5px;color:rgba(255,255,255,.4);font-family:var(--font-mono);letter-spacing:.06em;text-transform:uppercase}
+.contact-link-val{font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.contact-cta-block{background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.3);border-radius:var(--radius-lg);padding:28px}
+@media(min-width:640px){.contact-cta-block{padding:32px}}
+.contact-cta-block h3{font-size:18px;font-weight:600;color:var(--white);margin-bottom:10px;letter-spacing:-.02em}
+.contact-cta-block p{font-size:13.5px;color:rgba(255,255,255,.5);line-height:1.75;margin-bottom:22px}
+.btn-white{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:10px;background:var(--white);color:var(--gray-900);font-size:14px;font-weight:600;transition:transform .15s,box-shadow .2s}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,.3)}
+
+/* ─── FOOTER ─── */
+footer{background:var(--gray-900);padding:20px 1.25rem;border-top:1px solid rgba(255,255,255,.06);text-align:center}
+footer p{font-size:12px;color:rgba(255,255,255,.28);font-family:var(--font-mono)}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .6s cubic-bezier(.22,1,.36,1) both}
+.delay-1{animation-delay:.1s}.delay-2{animation-delay:.22s}.delay-3{animation-delay:.34s}.delay-4{animation-delay:.46s}
+</style>
+</head>
+<body>
+
+<!-- ─── NAVBAR ─── -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <div class="nav-logo-dot"></div>
+      Ilyesse El Adaoui
+    </div>
+
+    <!-- Desktop links -->
+    <div class="nav-links-desktop">
+      <a href="#about" data-i18n="nav_about">À propos</a>
+      <a href="#expertise" data-i18n="nav_expertise">Expertise</a>
+      <a href="#projects" data-i18n="nav_projects">Projets</a>
+      <a href="#experience" data-i18n="nav_experience">Expérience</a>
+      <a href="#contact" class="nav-cta" data-i18n="nav_contact">Contact</a>
+    </div>
+
+    <!-- Right cluster -->
+    <div class="nav-right">
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btn-fr" onclick="setLang('fr')">🇫🇷 FR</button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">🇬🇧 EN</button>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleDrawer()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile drawer -->
+<div class="mobile-drawer" id="mobile-drawer">
+  <a href="#about" data-i18n="nav_about" onclick="closeDrawer()">À propos</a>
+  <a href="#expertise" data-i18n="nav_expertise" onclick="closeDrawer()">Expertise</a>
+  <a href="#projects" data-i18n="nav_projects" onclick="closeDrawer()">Projets</a>
+  <a href="#experience" data-i18n="nav_experience" onclick="closeDrawer()">Expérience</a>
+  <a href="#contact" class="drawer-cta" data-i18n="nav_contact" onclick="closeDrawer()">Contact</a>
+</div>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+  </div>
+  <div class="hero-inner container">
+    <div class="hero-content">
+      <div class="hero-badge fade-up">
+        <span class="hero-badge-dot"></span>
+        <span data-i18n="hero_badge">Disponible en alternance — Septembre 2026</span>
+      </div>
+      <h1 class="hero-title fade-up delay-1">
+        <span data-i18n="hero_t1">AI &amp; </span><span class="accent" data-i18n="hero_t2">Data Engineer</span><br>
+        <span data-i18n="hero_t3">Pipelines cloud scalables et systèmes intelligents.</span>
+      </h1>
+      <p class="hero-desc fade-up delay-2" data-i18n="hero_desc">
+        Spécialisé en Data Engineering et IA appliquée. Pipelines ETL end-to-end, plateformes SaaS cloud-native sur GCP et intégration LLM pour l'automatisation analytique.
+      </p>
+      <div class="hero-actions fade-up delay-3">
+        <a href="#projects" class="btn-primary" data-i18n="hero_cta1">Voir les projets →</a>
+        <a href="#contact" class="btn-secondary" data-i18n="hero_cta2">Me contacter</a>
+      </div>
+      <div class="hero-stats fade-up delay-4">
+        <div>
+          <div class="stat-num">8<span>+</span></div>
+          <div class="stat-label" data-i18n="stat1">Projets techniques</div>
+        </div>
+        <div>
+          <div class="stat-num">5<span>+</span></div>
+          <div class="stat-label" data-i18n="stat2">Expériences pro</div>
+        </div>
+        <div>
+          <div class="stat-num">3<span>+</span></div>
+          <div class="stat-label" data-i18n="stat3">Intégrations LLM</div>
+        </div>
+        <div>
+          <div class="stat-num">GCP</div>
+          <div class="stat-label" data-i18n="stat4">Cloud principal</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="section-label" data-i18n="about_label">À propos</p>
+        <h2 class="section-title" data-i18n="about_title">Des pipelines data qui passent en production.</h2>
+        <p data-i18n="about_p1">Je suis Ilyesse El Adaoui, AI & Data Engineer basé à Paris. Je conçois des systèmes data end-to-end : ingestion multi-sources, pipelines ETL robustes, architectures cloud sur Google Cloud et automatisation analytique via LLM.</p>
+        <p data-i18n="about_p2">Chez SpidR, je déploie des infrastructures data production-grade sur GCP, intègre des APIs LLM (Cerebras / Groq) pour l'automatisation analytique et maintiens des architectures multi-tenant en CI/CD. Ma priorité : fiabilité des pipelines, qualité architecturale et transformation de données brutes en intelligence opérationnelle.</p>
+        <p data-i18n="about_p3">Je poursuis actuellement une spécialisation avancée en Data Engineering & IA à l'EFREI Paris.</p>
+      </div>
+      <div class="about-highlights">
+        <div class="highlight-card">
+          <div class="highlight-icon blue">🏗️</div>
+          <div class="highlight-body">
+            <h4 data-i18n="hl1_title">Data Engineering at scale</h4>
+            <p data-i18n="hl1_desc">Pipelines ETL end-to-end avec Python, Airflow, PostgreSQL, ingestion multi-sources et transformations automatisées.</p>
+          </div>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-icon cyan">☁️</div>
+          <div class="highlight-body">
+            <h4 data-i18n="hl2_title">Cloud-native sur GCP</h4>
+            <p data-i18n="hl2_desc">Déploiements SaaS multi-tenant sur Cloud Run, Cloud SQL, CI/CD GitHub Actions, monitoring production.</p>
+          </div>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-icon slate">🤖</div>
+          <div class="highlight-body">
+            <h4 data-i18n="hl3_title">IA appliquée & LLM</h4>
+            <p data-i18n="hl3_desc">Cerebras, Groq et pipelines LLM custom pour l'automatisation analytique, le NLP et la génération de synthèses métier.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── EXPERTISE ─── -->
+<section id="expertise">
+  <div class="container">
+    <p class="section-label" data-i18n="exp_label">Expertise</p>
+    <h2 class="section-title" data-i18n="exp_title">Domaines clés</h2>
+    <p class="section-sub" data-i18n="exp_sub">Un profil data engineering full-spectrum, de l'ingestion brute à l'automatisation intelligente.</p>
+    <div class="expertise-grid">
+      <div class="expertise-card">
+        <div class="expertise-icon">⚡</div>
+        <h3 data-i18n="e1_title">Data Engineering</h3>
+        <p data-i18n="e1_desc">Conception de pipelines ETL robustes et production-ready : ingestion multi-sources, transformation Pandas/SQL, stockage PostgreSQL, orchestration Airflow.</p>
+        <div class="expertise-tags">
+          <span class="tag blue">Python</span><span class="tag blue">Airflow</span><span class="tag blue">Pandas</span><span class="tag blue">SQL</span>
+        </div>
+      </div>
+      <div class="expertise-card">
+        <div class="expertise-icon">☁️</div>
+        <h3 data-i18n="e2_title">Architecture Cloud</h3>
+        <p data-i18n="e2_desc">Systèmes cloud-native multi-tenant sur GCP — microservices Cloud Run, Cloud SQL, déploiements scalables et coût-maîtrisé.</p>
+        <div class="expertise-tags">
+          <span class="tag cyan">GCP</span><span class="tag cyan">Cloud Run</span><span class="tag cyan">Docker</span><span class="tag cyan">AWS</span>
+        </div>
+      </div>
+      <div class="expertise-card">
+        <div class="expertise-icon">🤖</div>
+        <h3 data-i18n="e3_title">IA & Automatisation</h3>
+        <p data-i18n="e3_desc">Intégration LLM (Cerebras / Groq) pour synthèses métier automatisées, pipelines NLP et orchestration de workflows intelligents.</p>
+        <div class="expertise-tags">
+          <span class="tag">LLM APIs</span><span class="tag">NLP</span><span class="tag">Cerebras</span><span class="tag">Groq</span>
+        </div>
+      </div>
+      <div class="expertise-card">
+        <div class="expertise-icon">🔄</div>
+        <h3 data-i18n="e4_title">DevOps & CI/CD</h3>
+        <p data-i18n="e4_desc">Pipelines de déploiement complets avec GitHub Actions, containerisation Docker, monitoring production et migrations de données.</p>
+        <div class="expertise-tags">
+          <span class="tag">GitHub Actions</span><span class="tag">Docker</span><span class="tag">FastAPI</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── STACK ─── -->
+<section id="stack">
+  <div class="container">
+    <p class="section-label" data-i18n="stack_label">Stack Technique</p>
+    <h2 class="section-title" data-i18n="stack_title">Outils & technologies</h2>
+    <p class="section-sub" data-i18n="stack_sub">Stack éprouvée en production sur data, cloud, IA et développement full-stack.</p>
+    <div class="stack-categories">
+      <div class="stack-cat">
+        <h3 data-i18n="stack_lang">Langages</h3>
+        <div class="stack-items">
+          <div class="stack-item"><span class="stack-dot" style="background:#3776ab"></span>Python</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#4479a1"></span>SQL</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#8993be"></span>PHP</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#b07219"></span>Java</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#3178c6"></span>TypeScript</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#00b4ab"></span>Dart</div>
+        </div>
+      </div>
+      <div class="stack-cat">
+        <h3 data-i18n="stack_data">Data Engineering</h3>
+        <div class="stack-items">
+          <div class="stack-item"><span class="stack-dot" style="background:#017cee"></span>Apache Airflow</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#e97627"></span>Pandas</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#4ba8c8"></span>NumPy</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#7f52ff"></span>FastAPI</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#336791"></span>PostgreSQL</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#0066cc"></span>MySQL</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#47a248"></span>MongoDB</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#005571"></span>Elasticsearch</div>
+        </div>
+      </div>
+      <div class="stack-cat">
+        <h3 data-i18n="stack_cloud">Cloud & DevOps</h3>
+        <div class="stack-items">
+          <div class="stack-item"><span class="stack-dot" style="background:#4285f4"></span>Google Cloud Platform</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#4285f4"></span>Cloud Run</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#4285f4"></span>Cloud SQL</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#ff9900"></span>AWS</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#2496ed"></span>Docker</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#24292e"></span>GitHub Actions</div>
+        </div>
+      </div>
+      <div class="stack-cat">
+        <h3 data-i18n="stack_ai">IA & BI</h3>
+        <div class="stack-items">
+          <div class="stack-item"><span class="stack-dot" style="background:#7b2ff7"></span>Cerebras</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#f55036"></span>Groq</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#0052cc"></span>Power BI / DAX — Débutant</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#11557c"></span>Matplotlib — Débutant</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#4c72b0"></span>Seaborn — Débutant</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#00b4ab"></span>Flutter</div>
+          <div class="stack-item"><span class="stack-dot" style="background:#61dafb"></span>Next.js / React</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PROJECTS ─── -->
+<section id="projects">
+  <div class="container">
+    <p class="section-label" data-i18n="proj_label">Projets</p>
+    <h2 class="section-title" data-i18n="proj_title">Ce que j'ai construit</h2>
+    <p class="section-sub" data-i18n="proj_sub">Projets sélectionnés en data engineering, SaaS cloud et IA appliquée.</p>
+    <div class="projects-grid">
+
+      <!-- Featured -->
+      <div class="project-card featured">
+        <div>
+          <div class="project-header">
+            <div class="project-badge saas">● SaaS / GCP</div>
+            <h3>Chat Mallow — WhatsApp CRM Agent</h3>
+            <p data-i18n="p0_desc">Plateforme SaaS multi-tenant sur GreenAPI. Automatise les campagnes de prospection WhatsApp avec messages générés par LLM, intégration Google Calendar et UI de gestion de campagnes. Déployée sur GCP Cloud Run avec OAuth Google par utilisateur.</p>
+          </div>
+          <div class="project-body">
+            <div class="project-meta">
+              <span class="tag blue">Python / FastAPI</span>
+              <span class="tag blue">Cloud Run</span>
+              <span class="tag blue">Cloud SQL</span>
+              <span class="tag cyan">Cerebras LLM</span>
+              <span class="tag">GreenAPI</span>
+              <span class="tag">GitHub Actions</span>
+              <span class="tag">Google OAuth</span>
+            </div>
+          </div>
+        </div>
+        <div class="project-visual">
+          <svg class="pv-diagram" viewBox="0 0 280 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="80" width="60" height="30" rx="6" fill="#ddeaff" stroke="#4a90d9" stroke-width="1"/>
+            <text x="40" y="99" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#1240a8">WhatsApp</text>
+            <rect x="110" y="60" width="60" height="30" rx="6" fill="#4a90d9" stroke="#2563eb" stroke-width="1"/>
+            <text x="140" y="79" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#fff">Cloud Run</text>
+            <rect x="110" y="110" width="60" height="30" rx="6" fill="#e0fdf4" stroke="#10b981" stroke-width="1"/>
+            <text x="140" y="129" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#065f46">Cloud SQL</text>
+            <rect x="210" y="60" width="60" height="30" rx="6" fill="#faf5ff" stroke="#7c3aed" stroke-width="1"/>
+            <text x="240" y="79" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5b21b6">Cerebras</text>
+            <rect x="210" y="110" width="60" height="30" rx="6" fill="#cff4fd" stroke="#06b6d4" stroke-width="1"/>
+            <text x="240" y="129" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#0e7490">G. Calendar</text>
+            <line x1="70" y1="95" x2="110" y2="80" stroke="#8892aa" stroke-width="1" stroke-dasharray="4,2"/>
+            <line x1="170" y1="75" x2="210" y2="75" stroke="#8892aa" stroke-width="1" stroke-dasharray="4,2"/>
+            <line x1="170" y1="85" x2="210" y2="125" stroke="#8892aa" stroke-width="1" stroke-dasharray="4,2"/>
+            <line x1="140" y1="90" x2="140" y2="110" stroke="#8892aa" stroke-width="1" stroke-dasharray="4,2"/>
+            <text x="140" y="170" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#8892aa">Architecture GCP multi-tenant</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-badge etl">● ETL Pipeline</div>
+          <h3 data-i18n="p1_title">Data Pipeline End-to-End</h3>
+          <p data-i18n="p1_desc">Système ETL production-ready avec ingestion multi-sources via APIs, transformation Pandas, stockage PostgreSQL et orchestration Airflow. Containerisé Docker.</p>
+        </div>
+        <div class="project-body">
+          <div class="project-meta">
+            <span class="tag blue">Python</span><span class="tag blue">Airflow</span><span class="tag blue">PostgreSQL</span><span class="tag">Pandas</span><span class="tag">Docker</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-badge ai">● AI / NLP</div>
+          <h3 data-i18n="p2_title">Agent de Veille IA</h3>
+          <p data-i18n="p2_desc">Agent autonome de veille : ingestion de flux, analyse NLP, scoring de pertinence et génération de synthèses via LLM APIs. Livraison automatisée des insights.</p>
+        </div>
+        <div class="project-body">
+          <div class="project-meta">
+            <span class="tag">Python</span><span class="tag cyan">LLM APIs</span><span class="tag cyan">NLP</span><span class="tag">Automation</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-badge ai">● Data / NLP</div>
+          <h3>LinkedIn Signal Analyzer</h3>
+          <p data-i18n="p3_desc">Pipeline NLP automatisé : ingestion données LinkedIn, calcul scores d'engagement, segmentation profils et génération de synthèses analytiques.</p>
+        </div>
+        <div class="project-body">
+          <div class="project-meta">
+            <span class="tag">Python</span><span class="tag">Pandas</span><span class="tag cyan">NLP</span><span class="tag">Scoring</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-badge bi">● BI / Analytics</div>
+          <h3 data-i18n="p4_title">Dashboard KPI — Power BI</h3>
+          <p data-i18n="p4_desc">Dashboard exécutif consolidant KPIs multi-sources avec mesures DAX complexes, pipelines SQL automatisés et reporting interactif drill-through.</p>
+        </div>
+        <div class="project-body">
+          <div class="project-meta">
+            <span class="tag cyan">Power BI</span><span class="tag">DAX</span><span class="tag blue">SQL</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-badge siem">● Security / Data</div>
+          <h3 data-i18n="p5_title">SIEM Simplifié</h3>
+          <p data-i18n="p5_desc">Plateforme de monitoring d'événements de sécurité avec ingestion logs temps réel, indexation Elasticsearch, détection d'anomalies et dashboard Flask.</p>
+        </div>
+        <div class="project-body">
+          <div class="project-meta">
+            <span class="tag">Python</span><span class="tag">Flask</span><span class="tag">MongoDB</span><span class="tag">Elasticsearch</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-badge dev">● Fullstack / LLM</div>
+          <h3>Mistral / TaskMaster</h3>
+          <p data-i18n="p6_desc">Application de gestion de tâches avec LLM Mistral pour priorisation automatique et génération de suggestions. Stack Next.js, TypeScript, Prisma.</p>
+        </div>
+        <div class="project-body">
+          <div class="project-meta">
+            <span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Prisma</span><span class="tag cyan">LLM</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-badge dev">● Java / JDBC</div>
+          <h3 data-i18n="p7_title">Projet Air France</h3>
+          <p data-i18n="p7_desc">Application Java de gestion de données aéronautiques avec accès JDBC/MySQL, modélisation relationnelle et requêtes optimisées.</p>
+        </div>
+        <div class="project-body">
+          <div class="project-meta">
+            <span class="tag">Java</span><span class="tag">JDBC</span><span class="tag">MySQL</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-badge dev">● Mobile</div>
+          <h3 data-i18n="p8_title">Sudoku Mobile</h3>
+          <p data-i18n="p8_desc">Application Flutter cross-platform avec génération de grilles, vérification des règles, persistance scores PHP/MySQL et animations fluides.</p>
+        </div>
+        <div class="project-body">
+          <div class="project-meta">
+            <span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">PHP</span><span class="tag">MySQL</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── EXPERIENCE ─── -->
+<section id="experience">
+  <div class="container">
+    <p class="section-label" data-i18n="xp_label">Expérience</p>
+    <h2 class="section-title" data-i18n="xp_title">Parcours professionnel</h2>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="tl-date">Fév 2026 → Présent<br>Paris, France</div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <div>
+              <div class="tl-title" data-i18n="xp1_title">AI / Data &amp; Software Engineer</div>
+              <div class="tl-company">SpidR — <span data-i18n="xp1_type">Stage 6 mois</span></div>
+            </div>
+            <span class="tl-status">● <span data-i18n="xp_current">En cours</span></span>
+          </div>
+          <div class="tl-desc" data-i18n="xp1_desc">Conception et opération d'une infrastructure data production-grade. Pipelines ETL Python end-to-end avec ingestion multi-sources, transformation et stockage PostgreSQL. Déploiement SaaS multi-tenant sur GCP Cloud Run avec CI/CD GitHub Actions. Intégration LLM (Cerebras / Groq) pour automatisation analytique, pipelines NLP et synthèses métier.</div>
+          <div class="tl-chips">
+            <span class="tl-chip">Python</span><span class="tl-chip">GCP</span><span class="tl-chip">Cloud Run</span><span class="tl-chip">PostgreSQL</span><span class="tl-chip">LLM APIs</span><span class="tl-chip">GitHub Actions</span><span class="tl-chip">Docker</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date">Sept 2023 → Juin 2024<br>Alternance</div>
+        <div class="tl-content">
+          <div class="tl-header"><div>
+            <div class="tl-title" data-i18n="xp2_title">Ingénieur Développement Logiciel</div>
+            <div class="tl-company">Waldenergie AG</div>
+          </div></div>
+          <div class="tl-desc" data-i18n="xp2_desc">Développement logiciel au sein d'une entreprise spécialisée dans le secteur énergétique.</div>
+          <div class="tl-chips"><span class="tl-chip">Développement</span><span class="tl-chip">Logiciel</span></div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date">Juin 2023<br>Stage</div>
+        <div class="tl-content">
+          <div class="tl-header"><div>
+            <div class="tl-title" data-i18n="xp3_title">Administrateur Réseau</div>
+            <div class="tl-company">Mairie de Poissy</div>
+          </div></div>
+          <div class="tl-desc" data-i18n="xp3_desc">Administration réseau et systèmes informatiques au sein de la collectivité locale.</div>
+          <div class="tl-chips"><span class="tl-chip">Réseau</span><span class="tl-chip">Systèmes</span></div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date">Avr — Mai 2023<br>Stage</div>
+        <div class="tl-content">
+          <div class="tl-header"><div>
+            <div class="tl-title" data-i18n="xp4_title">Développeur Web</div>
+            <div class="tl-company">NextFormation</div>
+          </div></div>
+          <div class="tl-desc" data-i18n="xp4_desc">Développement et intégration d'interfaces web pour un organisme de formation.</div>
+          <div class="tl-chips"><span class="tl-chip">HTML/CSS</span><span class="tl-chip">JavaScript</span></div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date">Fév 2019<br>Stage</div>
+        <div class="tl-content">
+          <div class="tl-header"><div>
+            <div class="tl-title" data-i18n="xp5_title">Stagiaire Ingénierie Industrielle</div>
+            <div class="tl-company">TechnipFMC</div>
+          </div></div>
+          <div class="tl-desc" data-i18n="xp5_desc">Découverte des systèmes d'ingénierie industrielle au sein d'un groupe international spécialisé en technologies pétrolières et gazières.</div>
+          <div class="tl-chips"><span class="tl-chip">Ingénierie</span><span class="tl-chip">Industrie</span></div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date">Fév 2018<br>Stage</div>
+        <div class="tl-content">
+          <div class="tl-header"><div>
+            <div class="tl-title" data-i18n="xp6_title">Stagiaire Systèmes Informatiques</div>
+            <div class="tl-company">Société Générale</div>
+          </div></div>
+          <div class="tl-desc" data-i18n="xp6_desc">Découverte des infrastructures IT et systèmes d'information au sein d'un groupe bancaire international.</div>
+          <div class="tl-chips"><span class="tl-chip">Systèmes</span><span class="tl-chip">IT</span><span class="tl-chip">Banque</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── EDUCATION ─── -->
+<section id="education">
+  <div class="container">
+    <p class="section-label" data-i18n="edu_label">Formation</p>
+    <h2 class="section-title" data-i18n="edu_title">Parcours académique</h2>
+    <p class="section-sub" data-i18n="edu_sub">Parcours ingénieur orienté data, IA et systèmes cloud.</p>
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div class="edu-year">2026 → 2028</div>
+        <div class="edu-school">EFREI Paris</div>
+        <div class="edu-degree" data-i18n="edu1">Programme d'Ingénierie Avancée — Data Engineering & IA<br><small style="color:#8892aa;font-size:11.5px">Spécialisation — Alternance 1s/2e</small></div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-year">2023 → 2026</div>
+        <div class="edu-school">EFREI Paris</div>
+        <div class="edu-degree" data-i18n="edu2">Parcours Ingénieur — Data Engineering & Cloud<br><small style="color:#8892aa;font-size:11.5px">Spécialisation Data & Cloud Systems</small></div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-year" data-i18n="edu3_year">En cours</div>
+        <div class="edu-school" data-i18n="certs_school">Certifications</div>
+        <div class="edu-degree" data-i18n="certs_block">
+          <small style="color:#8892aa;font-size:11.5px" data-i18n="certs_done_label">Déjà obtenues</small><br>
+          <span data-i18n="cert_done_1">AWS Serveurs — Xavki · Cisco Networking Academy</span><br>
+          <span data-i18n="cert_done_2">Passe ton hack d'abord · Skills4All Dev Web Front End</span>
+          <br><br>
+          <small style="color:#8892aa;font-size:11.5px" data-i18n="certs_prep_label">En préparation (cours en cours)</small><br>
+          <span data-i18n="cert_prep_1">AZ-900 — Azure Fundamentals</span><br>
+          <span data-i18n="cert_prep_2">Databricks</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div>
+        <p class="section-label" data-i18n="contact_label">Contact</p>
+        <h2 class="section-title" data-i18n="contact_title">Travaillons ensemble.</h2>
+        <p class="section-sub" data-i18n="contact_sub">Vous cherchez un AI & Data Engineer pour une alternance ? Disponible à partir de septembre 2026.</p>
+        <div class="contact-links">
+          <a href="https://www.linkedin.com/in/ilyesse-eladaoui" target="_blank" class="contact-link">
+            <div class="contact-link-icon">in</div>
+            <div class="contact-link-text">
+              <span class="contact-link-label">LinkedIn</span>
+              <span class="contact-link-val">ilyesse-eladaoui</span>
+            </div>
+          </a>
+          <a href="mailto:ilyesseeladaoui2@gmail.com" class="contact-link">
+            <div class="contact-link-icon">@</div>
+            <div class="contact-link-text">
+              <span class="contact-link-label">Email</span>
+              <span class="contact-link-val">ilyesseeladaoui2@gmail.com</span>
+            </div>
+          </a>
+          <a href="https://github.com/Ilyesse-soc" target="_blank" class="contact-link">
+            <div class="contact-link-icon" style="font-size:11px">GH</div>
+            <div class="contact-link-text">
+              <span class="contact-link-label">GitHub</span>
+              <span class="contact-link-val">github.com/Ilyesse-soc</span>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="contact-cta-block">
+        <h3 data-i18n="cta_title">Alternance — Sep 2026</h3>
+        <p data-i18n="cta_desc">Je recherche un contrat d'alternance pour approfondir ma spécialisation en Data Engineering & IA (1 semaine école / 2 semaines entreprise). Si votre équipe travaille sur de l'infrastructure data, des pipelines cloud ou de l'IA appliquée — contactez-moi.</p>
+        <a href="https://www.linkedin.com/in/ilyesse-eladaoui" target="_blank" class="btn-white" data-i18n="cta_btn">Voir le profil LinkedIn →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Ilyesse El Adaoui — AI & Data Engineer — Paris</p>
+</footer>
+
+<script>
+/* ── TRANSLATIONS ── */
+const i18n = {
+  fr:{
+    nav_about:"À propos",nav_expertise:"Expertise",nav_projects:"Projets",nav_experience:"Expérience",nav_contact:"Contact",
+    hero_badge:"Disponible en alternance — Septembre 2026",
+    hero_t1:"AI & ",hero_t2:"Data Engineer",hero_t3:"Pipelines cloud scalables et systèmes intelligents.",
+    hero_desc:"Spécialisé en Data Engineering et IA appliquée. Pipelines ETL end-to-end, plateformes SaaS cloud-native sur GCP et intégration LLM pour l'automatisation analytique.",
+    hero_cta1:"Voir les projets →",hero_cta2:"Me contacter",
+    stat1:"Projets techniques",stat2:"Expériences pro",stat3:"Intégrations LLM",stat4:"Cloud principal",
+    about_label:"À propos",about_title:"Des pipelines data qui passent en production.",
+    about_p1:"Je suis Ilyesse El Adaoui, AI & Data Engineer basé à Paris. Je conçois des systèmes data end-to-end : ingestion multi-sources, pipelines ETL robustes, architectures cloud sur Google Cloud et automatisation analytique via LLM.",
+    about_p2:"Chez SpidR, je déploie des infrastructures data production-grade sur GCP, intègre des APIs LLM (Cerebras / Groq) pour l'automatisation analytique et maintiens des architectures multi-tenant en CI/CD. Ma priorité : fiabilité des pipelines, qualité architecturale et transformation de données brutes en intelligence opérationnelle.",
+    about_p3:"Je poursuis actuellement une spécialisation avancée en Data Engineering & IA à l'EFREI Paris.",
+    hl1_title:"Data Engineering at scale",hl1_desc:"Pipelines ETL end-to-end avec Python, Airflow, PostgreSQL, ingestion multi-sources et transformations automatisées.",
+    hl2_title:"Cloud-native sur GCP",hl2_desc:"Déploiements SaaS multi-tenant sur Cloud Run, Cloud SQL, CI/CD GitHub Actions, monitoring production.",
+    hl3_title:"IA appliquée & LLM",hl3_desc:"Cerebras, Groq et pipelines LLM custom pour l'automatisation analytique, le NLP et la génération de synthèses métier.",
+    exp_label:"Expertise",exp_title:"Domaines clés",exp_sub:"Un profil data engineering full-spectrum, de l'ingestion brute à l'automatisation intelligente.",
+    e1_title:"Data Engineering",e1_desc:"Conception de pipelines ETL robustes et production-ready : ingestion multi-sources, transformation Pandas/SQL, stockage PostgreSQL, orchestration Airflow.",
+    e2_title:"Architecture Cloud",e2_desc:"Systèmes cloud-native multi-tenant sur GCP — microservices Cloud Run, Cloud SQL, déploiements scalables et coût-maîtrisé.",
+    e3_title:"IA & Automatisation",e3_desc:"Intégration LLM (Cerebras / Groq) pour synthèses métier automatisées, pipelines NLP et orchestration de workflows intelligents.",
+    e4_title:"DevOps & CI/CD",e4_desc:"Pipelines de déploiement complets avec GitHub Actions, containerisation Docker, monitoring production et migrations de données.",
+    stack_label:"Stack Technique",stack_title:"Outils & technologies",stack_sub:"Stack éprouvée en production sur data, cloud, IA et développement full-stack.",
+    stack_lang:"Langages",stack_data:"Data Engineering",stack_cloud:"Cloud & DevOps",stack_ai:"IA & BI",
+    proj_label:"Projets",proj_title:"Ce que j'ai construit",proj_sub:"Projets sélectionnés en data engineering, SaaS cloud et IA appliquée.",
+    p0_desc:"Plateforme SaaS multi-tenant sur GreenAPI. Automatise les campagnes de prospection WhatsApp avec messages générés par LLM, intégration Google Calendar et UI de gestion de campagnes. Déployée sur GCP Cloud Run avec OAuth Google par utilisateur.",
+    p1_title:"Data Pipeline End-to-End",p1_desc:"Système ETL production-ready avec ingestion multi-sources via APIs, transformation Pandas, stockage PostgreSQL et orchestration Airflow. Containerisé Docker.",
+    p2_title:"Agent de Veille IA",p2_desc:"Agent autonome de veille : ingestion de flux, analyse NLP, scoring de pertinence et génération de synthèses via LLM APIs. Livraison automatisée des insights.",
+    p3_desc:"Pipeline NLP automatisé : ingestion données LinkedIn, calcul scores d'engagement, segmentation profils et génération de synthèses analytiques.",
+    p4_title:"Dashboard KPI — Power BI",p4_desc:"Dashboard exécutif consolidant KPIs multi-sources avec mesures DAX complexes, pipelines SQL automatisés et reporting interactif drill-through.",
+    p5_title:"SIEM Simplifié",p5_desc:"Plateforme de monitoring d'événements de sécurité avec ingestion logs temps réel, indexation Elasticsearch, détection d'anomalies et dashboard Flask.",
+    p6_desc:"Application de gestion de tâches avec LLM Mistral pour priorisation automatique et génération de suggestions. Stack Next.js, TypeScript, Prisma.",
+    p7_title:"Projet Air France",p7_desc:"Application Java de gestion de données aéronautiques avec accès JDBC/MySQL, modélisation relationnelle et requêtes optimisées.",
+    p8_title:"Sudoku Mobile",p8_desc:"Application Flutter cross-platform avec génération de grilles, vérification des règles, persistance scores PHP/MySQL et animations fluides.",
+    xp_label:"Expérience",xp_title:"Parcours professionnel",
+    xp1_title:"AI / Data & Software Engineer",xp1_type:"Stage 6 mois",xp_current:"En cours",
+    xp1_desc:"Conception et opération d'une infrastructure data production-grade. Pipelines ETL Python end-to-end avec ingestion multi-sources, transformation et stockage PostgreSQL. Déploiement SaaS multi-tenant sur GCP Cloud Run avec CI/CD GitHub Actions. Intégration LLM (Cerebras / Groq) pour automatisation analytique, pipelines NLP et synthèses métier.",
+    xp2_title:"Ingénieur Développement Logiciel",xp2_desc:"Développement logiciel au sein d'une entreprise spécialisée dans le secteur énergétique.",
+    xp3_title:"Administrateur Réseau",xp3_desc:"Administration réseau et systèmes informatiques au sein de la collectivité locale.",
+    xp4_title:"Développeur Web",xp4_desc:"Développement et intégration d'interfaces web pour un organisme de formation.",
+    xp5_title:"Stagiaire Ingénierie Industrielle",xp5_desc:"Découverte des systèmes d'ingénierie industrielle au sein d'un groupe international spécialisé en technologies pétrolières et gazières.",
+    xp6_title:"Stagiaire Systèmes Informatiques",xp6_desc:"Découverte des infrastructures IT et systèmes d'information au sein d'un groupe bancaire international.",
+    edu_label:"Formation",edu_title:"Parcours académique",edu_sub:"Parcours ingénieur orienté data, IA et systèmes cloud.",
+    edu1:"Programme d'Ingénierie Avancée — Data Engineering & IA<br><small style='color:#8892aa;font-size:11.5px'>Spécialisation — Alternance 1s/2e</small>",
+    edu2:"Parcours Ingénieur — Data Engineering & Cloud<br><small style='color:#8892aa;font-size:11.5px'>Spécialisation Data & Cloud Systems</small>",
+    edu3_year:"En cours",
+    certs_school:"Certifications",
+    certs_done_label:"Déjà obtenues",
+    cert_done_1:"AWS Serveurs — Xavki · Cisco Networking Academy",
+    cert_done_2:"Passe ton hack d'abord · Skills4All Dev Web Front End",
+    certs_prep_label:"En préparation (cours en cours)",
+    cert_prep_1:"AZ-900 — Azure Fundamentals",
+    cert_prep_2:"Databricks",
+    contact_label:"Contact",contact_title:"Travaillons ensemble.",contact_sub:"Vous cherchez un AI & Data Engineer pour une alternance ? Disponible à partir de septembre 2026.",
+    cta_title:"Alternance — Sep 2026",cta_desc:"Je recherche un contrat d'alternance pour approfondir ma spécialisation en Data Engineering & IA (1 semaine école / 2 semaines entreprise). Si votre équipe travaille sur de l'infrastructure data, des pipelines cloud ou de l'IA appliquée — contactez-moi.",
+    cta_btn:"Voir le profil LinkedIn →"
+  },
+  en:{
+    nav_about:"About",nav_expertise:"Expertise",nav_projects:"Projects",nav_experience:"Experience",nav_contact:"Contact",
+    hero_badge:"Available for work-study — September 2026",
+    hero_t1:"AI & ",hero_t2:"Data Engineer",hero_t3:"Scalable cloud architectures and intelligent pipelines.",
+    hero_desc:"Specialized in Data Engineering and applied AI. End-to-end ETL pipelines, cloud-native SaaS platforms on GCP and LLM integration for analytical automation.",
+    hero_cta1:"View Projects →",hero_cta2:"Contact Me",
+    stat1:"Technical projects",stat2:"Work experiences",stat3:"LLM integrations",stat4:"Main cloud",
+    about_label:"About",about_title:"Data pipelines that ship to production.",
+    about_p1:"I'm Ilyesse El Adaoui, AI & Data Engineer based in Paris. I design end-to-end data systems: multi-source ingestion, robust ETL pipelines, cloud architectures on Google Cloud and LLM-powered analytical automation.",
+    about_p2:"At SpidR, I deploy production-grade data infrastructure on GCP, integrate LLM APIs (Cerebras / Groq) for analytical automation and maintain multi-tenant CI/CD architectures. My focus: pipeline reliability, architectural quality, and turning raw data into operational intelligence.",
+    about_p3:"I am currently deepening my expertise in Data Engineering & AI through an advanced engineering program at EFREI Paris.",
+    hl1_title:"Data Engineering at scale",hl1_desc:"End-to-end ETL pipelines with Python, Airflow, PostgreSQL, multi-source ingestion and automated transformations.",
+    hl2_title:"Cloud-native on GCP",hl2_desc:"Multi-tenant SaaS deployments on Cloud Run, Cloud SQL, GitHub Actions CI/CD, production monitoring.",
+    hl3_title:"Applied AI & LLM",hl3_desc:"Cerebras, Groq and custom LLM pipelines for analytical automation, NLP, and business intelligence generation.",
+    exp_label:"Expertise",exp_title:"Core domains",exp_sub:"A full-spectrum data engineering profile, from raw ingestion to intelligent automation.",
+    e1_title:"Data Engineering",e1_desc:"Designing robust, production-ready ETL pipelines: multi-source ingestion, Pandas/SQL transformation, PostgreSQL storage, Airflow orchestration.",
+    e2_title:"Cloud Architecture",e2_desc:"Multi-tenant cloud-native systems on GCP — Cloud Run microservices, Cloud SQL, scalable and cost-efficient deployments.",
+    e3_title:"AI & Automation",e3_desc:"LLM API integration (Cerebras / Groq) for automated business summaries, NLP pipelines and intelligent workflow orchestration.",
+    e4_title:"DevOps & CI/CD",e4_desc:"Full deployment pipelines with GitHub Actions, Docker containerization, production monitoring and data migrations.",
+    stack_label:"Technical Stack",stack_title:"Tools & technologies",stack_sub:"Production-proven stack across data, cloud, AI and full-stack development.",
+    stack_lang:"Languages",stack_data:"Data Engineering",stack_cloud:"Cloud & DevOps",stack_ai:"AI & BI",
+    proj_label:"Projects",proj_title:"What I've built",proj_sub:"Selected projects in data engineering, cloud SaaS and applied AI.",
+    p0_desc:"Multi-tenant SaaS platform on GreenAPI. Automates WhatsApp prospecting campaigns with LLM-generated messages, Google Calendar integration and a campaign management UI. Deployed on GCP Cloud Run with per-user Google OAuth.",
+    p1_title:"Data Pipeline End-to-End",p1_desc:"Production-ready ETL system with multi-source API ingestion, Pandas transformation, PostgreSQL storage and Airflow orchestration. Docker-containerized.",
+    p2_title:"AI Monitoring Agent",p2_desc:"Autonomous intelligence agent: stream ingestion, NLP analysis, relevance scoring and automated summary generation via LLM APIs.",
+    p3_desc:"Automated NLP pipeline: LinkedIn data ingestion, engagement score computation, profile segmentation and analytical summary generation.",
+    p4_title:"KPI Dashboard — Power BI",p4_desc:"Executive dashboard consolidating multi-source KPIs with complex DAX measures, automated SQL pipelines and interactive drill-through reporting.",
+    p5_title:"Simplified SIEM",p5_desc:"Security event monitoring platform with real-time log ingestion, Elasticsearch indexing, anomaly detection and a Flask alert dashboard.",
+    p6_desc:"Intelligent task management app integrating a Mistral LLM for automatic prioritization and suggestion generation. Stack: Next.js, TypeScript, Prisma.",
+    p7_title:"Air France Project",p7_desc:"Java application for aeronautical data management with JDBC/MySQL access, relational modeling and optimized queries.",
+    p8_title:"Mobile Sudoku",p8_desc:"Cross-platform Flutter app with grid generation, rule validation, PHP/MySQL score persistence and smooth animations.",
+    xp_label:"Experience",xp_title:"Professional background",
+    xp1_title:"AI / Data & Software Engineer",xp1_type:"6-month internship",xp_current:"Current",
+    xp1_desc:"Designing and operating production-grade data infrastructure. End-to-end Python ETL pipelines with multi-source API ingestion, transformation and PostgreSQL storage. Multi-tenant SaaS deployment on GCP Cloud Run with GitHub Actions CI/CD. LLM integration (Cerebras / Groq) for analytical automation, NLP workflows and business intelligence generation.",
+    xp2_title:"Software Development Engineer",xp2_desc:"Software development at an energy sector company.",
+    xp3_title:"Network Administrator",xp3_desc:"Network and IT systems administration within local government.",
+    xp4_title:"Web Developer",xp4_desc:"Web interface development and integration for a training organization.",
+    xp5_title:"Industrial Engineering Intern",xp5_desc:"Introduction to industrial engineering systems within an international group specializing in oil and gas technologies.",
+    xp6_title:"IT Systems Intern",xp6_desc:"Introduction to IT infrastructure and information systems within an international banking group.",
+    edu_label:"Education",edu_title:"Academic background",edu_sub:"Engineering track focused on data, AI and cloud systems.",
+    edu1:"Advanced Engineering Program — Data Engineering & AI<br><small style='color:#8892aa;font-size:11.5px'>Specialization — Work-study 1w/2w</small>",
+    edu2:"Engineering Track — Data Engineering & Cloud Systems<br><small style='color:#8892aa;font-size:11.5px'>Specialization Data & Cloud</small>",
+    edu3_year:"In progress",
+    certs_school:"Certifications",
+    certs_done_label:"Earned",
+    cert_done_1:"AWS Servers — Xavki · Cisco Networking Academy",
+    cert_done_2:"Passe ton hack d'abord · Skills4All Web Front-End",
+    certs_prep_label:"In progress (courses)",
+    cert_prep_1:"AZ-900 — Azure Fundamentals",
+    cert_prep_2:"Databricks",
+    contact_label:"Contact",contact_title:"Let's work together.",contact_sub:"Looking for an AI & Data Engineer for a work-study contract? Available from September 2026.",
+    cta_title:"Work-study — Sep 2026",cta_desc:"I'm seeking a work-study contract to deepen my specialization in Data Engineering & AI (1 week school / 2 weeks company). If your team works on data infrastructure, cloud pipelines or applied AI — reach out.",
+    cta_btn:"View LinkedIn profile →"
+  }
+};
+
+let currentLang = 'fr';
+
+function setLang(lang){
+  currentLang = lang;
+  const d = i18n[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k = el.getAttribute('data-i18n');
+    if(d[k]!==undefined) el.innerHTML = d[k];
+  });
+  document.getElementById('btn-fr').classList.toggle('active', lang==='fr');
+  document.getElementById('btn-en').classList.toggle('active', lang==='en');
+  document.documentElement.lang = lang;
+}
+
+/* ── HAMBURGER / DRAWER ── */
+function toggleDrawer(){
+  const d = document.getElementById('mobile-drawer');
+  const h = document.getElementById('hamburger');
+  const open = d.classList.toggle('open');
+  h.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+function closeDrawer(){
+  document.getElementById('mobile-drawer').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+  document.body.style.overflow = '';
+}
+// Close on outside click
+document.addEventListener('click', e=>{
+  const drawer = document.getElementById('mobile-drawer');
+  const hb = document.getElementById('hamburger');
+  if(drawer.classList.contains('open') && !drawer.contains(e.target) && !hb.contains(e.target)){
+    closeDrawer();
+  }
+});
+
+// Init
+setLang('fr');
+</script>
+</body>
+</html>
