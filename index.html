@@ -237,6 +237,7 @@ h1.hero-title .accent{color:var(--blue-500)}
 @media(min-width:640px){.cv-pages{padding:16px;gap:14px}}
 .cv-page{background:var(--white);border:1px solid var(--gray-100);border-radius:12px;box-shadow:0 1px 4px rgba(15,19,32,.06);padding:10px}
 .cv-page canvas{display:block;width:100%;height:auto}
+.cv-fail{background:var(--white);border:1px dashed var(--gray-200);border-radius:12px;padding:16px;color:var(--gray-600);font-size:13.5px;line-height:1.75}
 .cv-fallback{padding:14px 16px;color:var(--gray-600);font-size:13.5px;line-height:1.75;border-top:1px solid var(--gray-100);background:var(--white)}
 .cv-fallback a{color:var(--blue-600);text-decoration:underline}
 
@@ -913,6 +914,8 @@ const i18n = {
     cv_btn:"Voir le CV →",
     cv_modal_title:"CV — Ilyesse El Adaoui",
     cv_close:"Fermer",
+    cv_error_file:"Pour afficher le CV dans cette fenêtre, ouvre le site via un serveur (ex: http://localhost:5173) ou via GitHub Pages. Le mode fichier (file://) bloque le chargement du PDF.",
+    cv_error_generic:"Impossible de charger le CV dans cette fenêtre. Essaie via un serveur (http://localhost:5173) ou télécharge le PDF.",
     cv_download_hint:"Si besoin : ",
     cv_download:"Télécharger le CV",
     contact_label:"Contact",contact_title:"Travaillons ensemble.",contact_sub:"Vous cherchez un AI & Data Engineer pour une alternance ? Disponible à partir de septembre 2026.",
@@ -976,6 +979,8 @@ const i18n = {
     cv_btn:"View resume →",
     cv_modal_title:"Resume — Ilyesse El Adaoui",
     cv_close:"Close",
+    cv_error_file:"To view the resume in this window, open the site via a server (e.g. http://localhost:5173) or GitHub Pages. File mode (file://) blocks PDF loading.",
+    cv_error_generic:"Couldn’t load the resume in this window. Try via a server (http://localhost:5173) or download the PDF.",
     cv_download_hint:"If needed: ",
     cv_download:"Download resume",
     contact_label:"Contact",contact_title:"Let's work together.",contact_sub:"Looking for an AI & Data Engineer for a work-study contract? Available from September 2026.",
@@ -1022,6 +1027,12 @@ async function renderCvPdf(){
   const pagesEl = document.getElementById('cv-pages');
   const viewerEl = document.getElementById('cv-viewer');
   if(!pagesEl || !viewerEl) return;
+
+  if(window.location && window.location.protocol === 'file:'){
+    const msg = i18n?.[currentLang]?.cv_error_file || 'Open this site via a local server (http) to view the PDF here.';
+    pagesEl.innerHTML = `<div class="cv-fail">${msg}</div>`;
+    return;
+  }
 
   if(typeof window.pdfjsLib === 'undefined'){
     pagesEl.innerHTML = '';
@@ -1071,7 +1082,8 @@ async function renderCvPdf(){
 
     cvRendered = true;
   } catch {
-    pagesEl.innerHTML = '';
+    const msg = i18n?.[currentLang]?.cv_error_generic || 'Could not load the PDF. Try via a server or download it.';
+    pagesEl.innerHTML = `<div class="cv-fail">${msg}</div>`;
     cvRendered = false;
   } finally {
     cvRendering = false;
