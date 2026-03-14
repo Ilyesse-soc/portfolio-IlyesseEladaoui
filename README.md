@@ -8,7 +8,9 @@ Portfolio statique (HTML/CSS/JS) de Ilyesse El Adaoui.
 ## Auto-push (mise à jour automatique sur GitHub)
 Ce repo inclut un watcher PowerShell qui, à chaque modification de fichier, fait automatiquement `git add`, `git commit`, puis `git push`.
 
-- Dans VS Code : lancer la tâche **Auto-push: watch & sync to GitHub**
+- Dans VS Code : la tâche **Auto-push: watch & sync to GitHub** démarre automatiquement à l’ouverture du dossier.
+- Pour l’arrêter : `Terminal` → arrêter la tâche (ou fermer le terminal de la tâche).
+- Pour désactiver l’auto-démarrage : enlever `runOptions.runOn` dans `.vscode/tasks.json`.
 - Ou en terminal :
 	- `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\autopush.ps1`
 
