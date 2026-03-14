@@ -224,6 +224,16 @@ h1.hero-title .accent{color:var(--blue-500)}
 @media(min-width:768px){.cv-card{flex-direction:row;align-items:center}}
 .cv-card p{font-size:13.5px;color:var(--gray-600);line-height:1.75;max-width:720px}
 
+/* ─── RECOMMENDATION ─── */
+#recommendation{background:var(--white)}
+.rec-card{width:80%;margin:16px auto 0;background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-lg);padding:22px;box-shadow:var(--shadow-card);display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+@media(max-width:640px){.rec-card{width:100%}}
+.rec-quote{font-style:italic;font-size:13.5px;color:var(--gray-600);line-height:1.75}
+.rec-byline{display:flex;flex-direction:column;gap:2px;color:var(--gray-600);font-size:13px}
+.rec-author{color:var(--gray-900)}
+.rec-btn{background:var(--blue-600)}
+.rec-btn:hover{background:var(--blue-700)}
+
 .cv-modal{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;padding:1rem;background:rgba(15,19,32,.55);backdrop-filter:blur(6px)}
 .cv-modal.open{display:flex}
 .cv-modal-panel{width:min(1000px,calc(100% - 2rem));background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-lg);box-shadow:var(--shadow-card-hover);overflow:hidden}
@@ -791,6 +801,24 @@ footer p{font-size:12px;color:rgba(255,255,255,.28);font-family:var(--font-mono)
   </div>
 </section>
 
+<!-- ─── RECOMMENDATION ─── -->
+<section id="recommendation">
+  <div class="container">
+    <h2 class="section-title" data-i18n="rec_title">Recommendation</h2>
+    <p class="section-sub" data-i18n="rec_sub">Professional recommendation from a technology executive.</p>
+
+    <div class="rec-card" role="group" aria-label="Recommendation">
+      <blockquote class="rec-quote">“Ilyesse possède une forte capacité d’apprentissage, une grande autonomie et une réelle compréhension des architectures logicielles modernes. Il a contribué au développement d’un agent SaaS intégrant Python, Google Cloud et des services d’intelligence artificielle.”</blockquote>
+      <div class="rec-byline">
+        <div class="rec-author"><strong>Geoffroy Detrousselle</strong></div>
+        <div class="rec-role">Chief Technology Officer</div>
+        <div class="rec-company">SpidR</div>
+      </div>
+      <a class="btn-primary rec-btn" href="/assets/recommendations/recommendation-ilyesse-el-adaoui.pdf" data-i18n="rec_btn">Read full recommendation</a>
+    </div>
+  </div>
+</section>
+
 <!-- ─── CONTACT ─── -->
 <section id="contact">
   <div class="container">
@@ -912,6 +940,9 @@ const i18n = {
     cv_sub:"Consultez mon CV (PDF) directement sur la page.",
     cv_desc:"Ouverture dans une fenêtre intégrée (sans nouvel onglet) pour une consultation rapide.",
     cv_btn:"Voir le CV →",
+    rec_title:"Recommendation",
+    rec_sub:"Professional recommendation from a technology executive.",
+    rec_btn:"Read full recommendation",
     cv_modal_title:"CV — Ilyesse El Adaoui",
     cv_close:"Fermer",
     cv_error_file:"Pour afficher le CV dans cette fenêtre, ouvre le site via un serveur (ex: http://localhost:5173) ou via GitHub Pages. Le mode fichier (file://) bloque le chargement du PDF.",
@@ -977,6 +1008,9 @@ const i18n = {
     cv_sub:"View my resume (PDF) directly on the page.",
     cv_desc:"Opens in an embedded viewer (no new tab) for quick reading.",
     cv_btn:"View resume →",
+    rec_title:"Recommendation",
+    rec_sub:"Professional recommendation from a technology executive.",
+    rec_btn:"Read full recommendation",
     cv_modal_title:"Resume — Ilyesse El Adaoui",
     cv_close:"Close",
     cv_error_file:"To view the resume in this window, open the site via a server (e.g. http://localhost:5173) or GitHub Pages. File mode (file://) blocks PDF loading.",
