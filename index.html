@@ -57,8 +57,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav-h);backgrou
 /* Desktop links */
 .nav-links-desktop{display:none;gap:2rem;align-items:center}
 @media(min-width:900px){.nav-links-desktop{display:flex}}
-.nav-links-desktop a{font-size:13px;font-weight:400;color:var(--gray-600);transition:color .2s}
-.nav-links-desktop a:hover{color:var(--blue-600)}
+.nav-links-desktop a,.nav-links-desktop button{font-size:13px;font-weight:400;color:var(--gray-600);transition:color .2s}
+.nav-links-desktop a:hover,.nav-links-desktop button:hover{color:var(--blue-600)}
+.nav-links-desktop button{background:transparent;border:none;cursor:pointer;padding:0;font-family:inherit}
 .nav-cta{font-size:12.5px;font-weight:500;padding:7px 16px;border-radius:8px;background:var(--gray-900);color:var(--white)!important;transition:background .2s,transform .15s}
 .nav-cta:hover{background:var(--blue-700)!important;transform:translateY(-1px)}
 
@@ -217,6 +218,24 @@ h1.hero-title .accent{color:var(--blue-500)}
 .edu-school{font-size:15px;font-weight:600;color:var(--gray-900);margin-bottom:4px}
 .edu-degree{font-size:13px;color:var(--gray-400)}
 
+/* ─── CV ─── */
+#cv{background:var(--off-white)}
+.cv-card{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-lg);padding:22px;box-shadow:var(--shadow-card);display:flex;flex-direction:column;gap:14px;align-items:flex-start;justify-content:space-between}
+@media(min-width:768px){.cv-card{flex-direction:row;align-items:center}}
+.cv-card p{font-size:13.5px;color:var(--gray-600);line-height:1.75;max-width:720px}
+
+.cv-modal{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;padding:1rem;background:rgba(15,19,32,.55);backdrop-filter:blur(6px)}
+.cv-modal.open{display:flex}
+.cv-modal-panel{width:min(1000px,calc(100% - 2rem));background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-lg);box-shadow:var(--shadow-card-hover);overflow:hidden}
+.cv-dialog-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--gray-100)}
+@media(min-width:640px){.cv-dialog-header{padding:16px 18px}}
+.cv-dialog-title{font-size:13.5px;font-weight:600;color:var(--gray-900);letter-spacing:-.02em}
+.cv-close{font-family:var(--font-mono);font-size:11px;font-weight:500;padding:6px 10px;border-radius:8px;border:1px solid var(--gray-100);background:var(--gray-50);color:var(--gray-800);cursor:pointer;transition:background .2s,border-color .2s,transform .15s;white-space:nowrap}
+.cv-close:hover{background:var(--white);border-color:var(--gray-200);transform:translateY(-1px)}
+.cv-frame{width:100%;height:min(75vh,740px);border:0;background:var(--off-white)}
+.cv-fallback{padding:18px;color:var(--gray-600);font-size:13.5px;line-height:1.75}
+.cv-fallback a{color:var(--blue-600);text-decoration:underline}
+
 /* ─── CONTACT ─── */
 #contact{background:var(--gray-900);color:var(--white)}
 #contact .section-label{color:var(--cyan-400)}
@@ -264,6 +283,7 @@ footer p{font-size:12px;color:rgba(255,255,255,.28);font-family:var(--font-mono)
       <a href="#expertise" data-i18n="nav_expertise">Expertise</a>
       <a href="#projects" data-i18n="nav_projects">Projets</a>
       <a href="#experience" data-i18n="nav_experience">Expérience</a>
+      <button type="button" onclick="openCv()" data-i18n="nav_cv">CV</button>
       <a href="#contact" class="nav-cta" data-i18n="nav_contact">Contact</a>
     </div>
 
@@ -286,6 +306,7 @@ footer p{font-size:12px;color:rgba(255,255,255,.28);font-family:var(--font-mono)
   <a href="#expertise" data-i18n="nav_expertise" onclick="closeDrawer()">Expertise</a>
   <a href="#projects" data-i18n="nav_projects" onclick="closeDrawer()">Projets</a>
   <a href="#experience" data-i18n="nav_experience" onclick="closeDrawer()">Expérience</a>
+  <button type="button" data-i18n="nav_cv" onclick="openCv(); closeDrawer()" style="text-align:left">CV</button>
   <a href="#contact" class="drawer-cta" data-i18n="nav_contact" onclick="closeDrawer()">Contact</a>
 </div>
 
@@ -752,6 +773,19 @@ footer p{font-size:12px;color:rgba(255,255,255,.28);font-family:var(--font-mono)
   </div>
 </section>
 
+<!-- ─── CV ─── -->
+<section id="cv">
+  <div class="container">
+    <p class="section-label" data-i18n="cv_label">CV</p>
+    <h2 class="section-title" data-i18n="cv_title">Mon CV</h2>
+    <p class="section-sub" data-i18n="cv_sub">Consultez mon CV (PDF) directement sur la page.</p>
+    <div class="cv-card">
+      <p data-i18n="cv_desc">Ouverture dans une fenêtre intégrée (sans nouvel onglet) pour une consultation rapide.</p>
+      <button class="btn-primary" type="button" onclick="openCv()" data-i18n="cv_btn">Voir le CV →</button>
+    </div>
+  </div>
+</section>
+
 <!-- ─── CONTACT ─── -->
 <section id="contact">
   <div class="container">
@@ -797,11 +831,26 @@ footer p{font-size:12px;color:rgba(255,255,255,.28);font-family:var(--font-mono)
   <p>© 2026 Ilyesse El Adaoui — AI & Data Engineer — Paris</p>
 </footer>
 
+<div class="cv-modal" id="cv-modal" role="dialog" aria-modal="true" aria-labelledby="cv-dialog-title">
+  <div class="cv-modal-panel" role="document">
+    <div class="cv-dialog-header">
+      <div class="cv-dialog-title" id="cv-dialog-title" data-i18n="cv_modal_title">CV — Ilyesse El Adaoui</div>
+      <button class="cv-close" type="button" onclick="closeCv()" data-i18n="cv_close">Fermer</button>
+    </div>
+    <object class="cv-frame" data="./CV_Ilyesse_El_Adaoui_.pdf" type="application/pdf">
+      <div class="cv-fallback">
+        <span data-i18n="cv_fallback">Votre navigateur ne peut pas afficher le PDF ici.</span>
+        <a href="./CV_Ilyesse_El_Adaoui_.pdf" download data-i18n="cv_download">Télécharger le CV</a>
+      </div>
+    </object>
+  </div>
+</div>
+
 <script>
 /* ── TRANSLATIONS ── */
 const i18n = {
   fr:{
-    nav_about:"À propos",nav_expertise:"Expertise",nav_projects:"Projets",nav_experience:"Expérience",nav_contact:"Contact",
+    nav_about:"À propos",nav_expertise:"Expertise",nav_projects:"Projets",nav_experience:"Expérience",nav_cv:"CV",nav_contact:"Contact",
     hero_badge:"Disponible en alternance — Septembre 2026",
     hero_t1:"AI & ",hero_t2:"Data Engineer",hero_t3:"Pipelines cloud scalables et systèmes intelligents.",
     hero_desc:"Spécialisé en Data Engineering et IA appliquée. Pipelines ETL end-to-end, plateformes SaaS cloud-native sur GCP et intégration LLM pour l'automatisation analytique.",
@@ -850,12 +899,21 @@ const i18n = {
     certs_prep_label:"En préparation (cours en cours)",
     cert_prep_1:"AZ-900 — Azure Fundamentals",
     cert_prep_2:"Databricks",
+    cv_label:"CV",
+    cv_title:"Mon CV",
+    cv_sub:"Consultez mon CV (PDF) directement sur la page.",
+    cv_desc:"Ouverture dans une fenêtre intégrée (sans nouvel onglet) pour une consultation rapide.",
+    cv_btn:"Voir le CV →",
+    cv_modal_title:"CV — Ilyesse El Adaoui",
+    cv_close:"Fermer",
+    cv_fallback:"Votre navigateur ne peut pas afficher le PDF ici. ",
+    cv_download:"Télécharger le CV",
     contact_label:"Contact",contact_title:"Travaillons ensemble.",contact_sub:"Vous cherchez un AI & Data Engineer pour une alternance ? Disponible à partir de septembre 2026.",
     cta_title:"Alternance — Sep 2026",cta_desc:"Je recherche un contrat d'alternance pour approfondir ma spécialisation en Data Engineering & IA (1 semaine école / 2 semaines entreprise). Si votre équipe travaille sur de l'infrastructure data, des pipelines cloud ou de l'IA appliquée — contactez-moi.",
     cta_btn:"Voir le profil LinkedIn →"
   },
   en:{
-    nav_about:"About",nav_expertise:"Expertise",nav_projects:"Projects",nav_experience:"Experience",nav_contact:"Contact",
+    nav_about:"About",nav_expertise:"Expertise",nav_projects:"Projects",nav_experience:"Experience",nav_cv:"Resume",nav_contact:"Contact",
     hero_badge:"Available for work-study — September 2026",
     hero_t1:"AI & ",hero_t2:"Data Engineer",hero_t3:"Scalable cloud architectures and intelligent pipelines.",
     hero_desc:"Specialized in Data Engineering and applied AI. End-to-end ETL pipelines, cloud-native SaaS platforms on GCP and LLM integration for analytical automation.",
@@ -904,6 +962,15 @@ const i18n = {
     certs_prep_label:"In progress (courses)",
     cert_prep_1:"AZ-900 — Azure Fundamentals",
     cert_prep_2:"Databricks",
+    cv_label:"Resume",
+    cv_title:"My resume",
+    cv_sub:"View my resume (PDF) directly on the page.",
+    cv_desc:"Opens in an embedded viewer (no new tab) for quick reading.",
+    cv_btn:"View resume →",
+    cv_modal_title:"Resume — Ilyesse El Adaoui",
+    cv_close:"Close",
+    cv_fallback:"Your browser can’t display the PDF here. ",
+    cv_download:"Download resume",
     contact_label:"Contact",contact_title:"Let's work together.",contact_sub:"Looking for an AI & Data Engineer for a work-study contract? Available from September 2026.",
     cta_title:"Work-study — Sep 2026",cta_desc:"I'm seeking a work-study contract to deepen my specialization in Data Engineering & AI (1 week school / 2 weeks company). If your team works on data infrastructure, cloud pipelines or applied AI — reach out.",
     cta_btn:"View LinkedIn profile →"
@@ -937,6 +1004,31 @@ function closeDrawer(){
   document.getElementById('hamburger').classList.remove('open');
   document.body.style.overflow = '';
 }
+
+/* ── CV MODAL ── */
+function openCv(){
+  const modal = document.getElementById('cv-modal');
+  if(!modal) return;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeCv(){
+  const modal = document.getElementById('cv-modal');
+  if(!modal) return;
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+(() => {
+  const modal = document.getElementById('cv-modal');
+  if(!modal) return;
+  modal.addEventListener('click', (e) => {
+    if(e.target === modal) closeCv();
+  });
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && modal.classList.contains('open')) closeCv();
+  });
+})();
 // Close on outside click
 document.addEventListener('click', e=>{
   const drawer = document.getElementById('mobile-drawer');
