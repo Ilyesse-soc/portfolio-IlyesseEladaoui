@@ -838,11 +838,12 @@ footer p{font-size:12px;color:rgba(255,255,255,.28);font-family:var(--font-mono)
       <button class="cv-close" type="button" onclick="closeCv()" data-i18n="cv_close">Fermer</button>
     </div>
     <object class="cv-frame" data="./CV_Ilyesse_El_Adaoui_.pdf" type="application/pdf">
-      <div class="cv-fallback">
-        <span data-i18n="cv_fallback">Votre navigateur ne peut pas afficher le PDF ici.</span>
-        <a href="./CV_Ilyesse_El_Adaoui_.pdf" download data-i18n="cv_download">Télécharger le CV</a>
-      </div>
+      <iframe class="cv-frame" src="./CV_Ilyesse_El_Adaoui_.pdf" title="CV"></iframe>
     </object>
+    <div class="cv-fallback">
+      <span data-i18n="cv_fallback">Votre navigateur ne peut pas afficher le PDF ici.</span>
+      <a href="./CV_Ilyesse_El_Adaoui_.pdf" download data-i18n="cv_download">Télécharger le CV</a>
+    </div>
   </div>
 </div>
 
