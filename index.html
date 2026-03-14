@@ -232,8 +232,12 @@ h1.hero-title .accent{color:var(--blue-500)}
 .cv-dialog-title{font-size:13.5px;font-weight:600;color:var(--gray-900);letter-spacing:-.02em}
 .cv-close{font-family:var(--font-mono);font-size:11px;font-weight:500;padding:6px 10px;border-radius:8px;border:1px solid var(--gray-100);background:var(--gray-50);color:var(--gray-800);cursor:pointer;transition:background .2s,border-color .2s,transform .15s;white-space:nowrap}
 .cv-close:hover{background:var(--white);border-color:var(--gray-200);transform:translateY(-1px)}
-.cv-frame{width:100%;height:min(75vh,740px);border:0;background:var(--off-white)}
-.cv-fallback{padding:18px;color:var(--gray-600);font-size:13.5px;line-height:1.75}
+.cv-viewer{width:100%;height:min(75vh,740px);overflow:auto;background:var(--off-white)}
+.cv-pages{display:flex;flex-direction:column;gap:12px;padding:12px}
+@media(min-width:640px){.cv-pages{padding:16px;gap:14px}}
+.cv-page{background:var(--white);border:1px solid var(--gray-100);border-radius:12px;box-shadow:0 1px 4px rgba(15,19,32,.06);padding:10px}
+.cv-page canvas{display:block;width:100%;height:auto}
+.cv-fallback{padding:14px 16px;color:var(--gray-600);font-size:13.5px;line-height:1.75;border-top:1px solid var(--gray-100);background:var(--white)}
 .cv-fallback a{color:var(--blue-600);text-decoration:underline}
 
 /* ─── CONTACT ─── */
@@ -837,15 +841,17 @@ footer p{font-size:12px;color:rgba(255,255,255,.28);font-family:var(--font-mono)
       <div class="cv-dialog-title" id="cv-dialog-title" data-i18n="cv_modal_title">CV — Ilyesse El Adaoui</div>
       <button class="cv-close" type="button" onclick="closeCv()" data-i18n="cv_close">Fermer</button>
     </div>
-    <object class="cv-frame" data="./CV_Ilyesse_El_Adaoui_.pdf" type="application/pdf">
-      <iframe class="cv-frame" src="./CV_Ilyesse_El_Adaoui_.pdf" title="CV"></iframe>
-    </object>
+    <div class="cv-viewer" id="cv-viewer" aria-label="CV">
+      <div class="cv-pages" id="cv-pages"></div>
+    </div>
     <div class="cv-fallback">
-      <span data-i18n="cv_fallback">Votre navigateur ne peut pas afficher le PDF ici.</span>
+      <span data-i18n="cv_download_hint">Si besoin :</span>
       <a href="./CV_Ilyesse_El_Adaoui_.pdf" download data-i18n="cv_download">Télécharger le CV</a>
     </div>
   </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
 /* ── TRANSLATIONS ── */
@@ -907,7 +913,7 @@ const i18n = {
     cv_btn:"Voir le CV →",
     cv_modal_title:"CV — Ilyesse El Adaoui",
     cv_close:"Fermer",
-    cv_fallback:"Votre navigateur ne peut pas afficher le PDF ici. ",
+    cv_download_hint:"Si besoin : ",
     cv_download:"Télécharger le CV",
     contact_label:"Contact",contact_title:"Travaillons ensemble.",contact_sub:"Vous cherchez un AI & Data Engineer pour une alternance ? Disponible à partir de septembre 2026.",
     cta_title:"Alternance — Sep 2026",cta_desc:"Je recherche un contrat d'alternance pour approfondir ma spécialisation en Data Engineering & IA (1 semaine école / 2 semaines entreprise). Si votre équipe travaille sur de l'infrastructure data, des pipelines cloud ou de l'IA appliquée — contactez-moi.",
@@ -970,7 +976,7 @@ const i18n = {
     cv_btn:"View resume →",
     cv_modal_title:"Resume — Ilyesse El Adaoui",
     cv_close:"Close",
-    cv_fallback:"Your browser can’t display the PDF here. ",
+    cv_download_hint:"If needed: ",
     cv_download:"Download resume",
     contact_label:"Contact",contact_title:"Let's work together.",contact_sub:"Looking for an AI & Data Engineer for a work-study contract? Available from September 2026.",
     cta_title:"Work-study — Sep 2026",cta_desc:"I'm seeking a work-study contract to deepen my specialization in Data Engineering & AI (1 week school / 2 weeks company). If your team works on data infrastructure, cloud pipelines or applied AI — reach out.",
@@ -1007,11 +1013,79 @@ function closeDrawer(){
 }
 
 /* ── CV MODAL ── */
+let cvRendered = false;
+let cvRendering = false;
+const CV_PDF_URL = './CV_Ilyesse_El_Adaoui_.pdf';
+
+async function renderCvPdf(){
+  if(cvRendered || cvRendering) return;
+  const pagesEl = document.getElementById('cv-pages');
+  const viewerEl = document.getElementById('cv-viewer');
+  if(!pagesEl || !viewerEl) return;
+
+  if(typeof window.pdfjsLib === 'undefined'){
+    pagesEl.innerHTML = '';
+    cvRendering = false;
+    cvRendered = false;
+    return;
+  }
+
+  cvRendering = true;
+  pagesEl.innerHTML = '';
+
+  try{
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.js';
+    const loadingTask = window.pdfjsLib.getDocument({ url: CV_PDF_URL });
+    const pdf = await loadingTask.promise;
+
+    const viewerWidth = Math.max(320, viewerEl.clientWidth - 32);
+    const dpr = window.devicePixelRatio || 1;
+
+    for(let pageNum = 1; pageNum <= pdf.numPages; pageNum++){
+      const page = await pdf.getPage(pageNum);
+      const viewport1 = page.getViewport({ scale: 1 });
+      const scale = Math.min(2.0, Math.max(0.9, viewerWidth / viewport1.width));
+      const viewport = page.getViewport({ scale });
+
+      const wrap = document.createElement('div');
+      wrap.className = 'cv-page';
+
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d', { alpha: false });
+
+      canvas.width = Math.floor(viewport.width * dpr);
+      canvas.height = Math.floor(viewport.height * dpr);
+      canvas.style.width = `${Math.floor(viewport.width)}px`;
+      canvas.style.height = `${Math.floor(viewport.height)}px`;
+
+      wrap.appendChild(canvas);
+      pagesEl.appendChild(wrap);
+
+      const renderContext = {
+        canvasContext: ctx,
+        viewport: viewport,
+        transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null
+      };
+      await page.render(renderContext).promise;
+    }
+
+    cvRendered = true;
+  } catch {
+    pagesEl.innerHTML = '';
+    cvRendered = false;
+  } finally {
+    cvRendering = false;
+  }
+}
+
 function openCv(){
   const modal = document.getElementById('cv-modal');
   if(!modal) return;
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => {
+    renderCvPdf();
+  });
 }
 function closeCv(){
   const modal = document.getElementById('cv-modal');
