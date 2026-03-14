@@ -12,6 +12,9 @@
         "-File",
         "${workspaceFolder}\\scripts\\autopush.ps1"
       ],
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
       "isBackground": true,
       "problemMatcher": []
     }
