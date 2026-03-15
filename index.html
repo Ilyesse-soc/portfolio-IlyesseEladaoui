@@ -712,7 +712,18 @@ async function renderPdf(key) {
     return;
   }
   if (typeof window.pdfjsLib === 'undefined') {
-    pagesEl.innerHTML = '<div class="pdf-fail">pdf.js en cours de chargement, réessaie dans un instant.</div>';
+    const url = PDF_URLS[key];
+    pagesEl.innerHTML = `
+      <div class="pdf-page" style="padding:0">
+        <iframe
+          title="PDF"
+          src="${url}"
+          style="width:100%;height:70vh;border:0;display:block"
+          loading="eager"
+        ></iframe>
+      </div>
+    `;
+    rendered[key] = true;
     return;
   }
   rendering[key] = true;
