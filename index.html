@@ -225,7 +225,7 @@ h1.hero-title .accent{color:var(--blue-500)}
 .cv-card p{font-size:13.5px;color:var(--gray-600);line-height:1.75;max-width:720px}
 
 /* ─── RECOMMENDATION ─── */
-#recommendation{background:var(--white)}
+#recommendation{background:var(--off-white)}
 .rec-card{width:80%;margin:16px auto 0;background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-lg);padding:22px;box-shadow:var(--shadow-card);display:flex;flex-direction:column;gap:14px;align-items:flex-start}
 @media(max-width:640px){.rec-card{width:100%}}
 .rec-quote{font-style:italic;font-size:13.5px;color:var(--gray-600);line-height:1.75}
@@ -806,6 +806,7 @@ footer p{font-size:12px;color:rgba(255,255,255,.28);font-family:var(--font-mono)
 <!-- ─── RECOMMENDATION ─── -->
 <section id="recommendation">
   <div class="container">
+    <p class="section-label" data-i18n="rec_label">Recommandation</p>
     <h2 class="section-title" data-i18n="rec_title">Recommendation</h2>
     <p class="section-sub" data-i18n="rec_sub">Professional recommendation from a technology executive.</p>
 
@@ -888,7 +889,7 @@ footer p{font-size:12px;color:rgba(255,255,255,.28);font-family:var(--font-mono)
 /* ── TRANSLATIONS ── */
 const i18n = {
   fr:{
-    nav_about:"À propos",nav_expertise:"Expertise",nav_projects:"Projets",nav_experience:"Expérience",nav_recommendation:"Recommendation",nav_cv:"CV",nav_contact:"Contact",
+    nav_about:"À propos",nav_expertise:"Expertise",nav_projects:"Projets",nav_experience:"Expérience",nav_recommendation:"Recommandation",nav_cv:"CV",nav_contact:"Contact",
     hero_badge:"Disponible en alternance — Septembre 2026",
     hero_t1:"AI & ",hero_t2:"Data Engineer",hero_t3:"Pipelines cloud scalables et systèmes intelligents.",
     hero_desc:"Spécialisé en Data Engineering et IA appliquée. Pipelines ETL end-to-end, plateformes SaaS cloud-native sur GCP et intégration LLM pour l'automatisation analytique.",
@@ -942,9 +943,10 @@ const i18n = {
     cv_sub:"Consultez mon CV (PDF) directement sur la page.",
     cv_desc:"Ouverture dans une fenêtre intégrée (sans nouvel onglet) pour une consultation rapide.",
     cv_btn:"Voir le CV →",
-    rec_title:"Recommendation",
-    rec_sub:"Professional recommendation from a technology executive.",
-    rec_btn:"Read full recommendation",
+    rec_label:"Recommandation",
+    rec_title:"Recommandation",
+    rec_sub:"Recommandation professionnelle d'un responsable technologique.",
+    rec_btn:"Lire la recommandation complète",
     cv_modal_title:"CV — Ilyesse El Adaoui",
     cv_close:"Fermer",
     cv_error_file:"Pour afficher le CV dans cette fenêtre, ouvre le site via un serveur (ex: http://localhost:5173) ou via GitHub Pages. Le mode fichier (file://) bloque le chargement du PDF.",
@@ -1010,6 +1012,7 @@ const i18n = {
     cv_sub:"View my resume (PDF) directly on the page.",
     cv_desc:"Opens in an embedded viewer (no new tab) for quick reading.",
     cv_btn:"View resume →",
+    rec_label:"Recommendation",
     rec_title:"Recommendation",
     rec_sub:"Professional recommendation from a technology executive.",
     rec_btn:"Read full recommendation",
