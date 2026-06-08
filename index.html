@@ -699,7 +699,7 @@ document.addEventListener('click', e => {
   if (dr.classList.contains('open') && !dr.contains(e.target) && !hb.contains(e.target)) closeDrawer();
 });
 
-const PDF_URLS = { cv: './CV_Ilyesse_El_Adaoui.pdf', rec: 'assets/recommendations/recommendation-ilyesse-el-adaoui.pdf' };
+const PDF_URLS = { cv: './CV_Ilyesse_El_Adaoui.pdf', rec: './assets/recommendations/recommendation-ilyesse-el-adaoui.pdf' };
 const rendered = { cv: false, rec: false };
 const rendering = { cv: false, rec: false };
 
@@ -708,7 +708,18 @@ async function renderPdf(key) {
   const pagesEl = document.getElementById('pages-' + key);
   if (!pagesEl) return;
   if (window.location.protocol === 'file:') {
-    pagesEl.innerHTML = '<div class="pdf-fail">Ouvre le site via un serveur HTTP (ex: <code>python -m http.server 8080</code>) pour afficher le PDF. Le protocole <code>file://</code> bloque le chargement.</div>';
+    const url = PDF_URLS[key];
+    pagesEl.innerHTML = `
+      <div class="pdf-page" style="padding:0">
+        <iframe
+          title="PDF"
+          src="${url}"
+          style="width:100%;height:70vh;border:0;display:block"
+          loading="eager"
+        ></iframe>
+      </div>
+    `;
+    rendered[key] = true;
     return;
   }
   if (typeof window.pdfjsLib === 'undefined') {
